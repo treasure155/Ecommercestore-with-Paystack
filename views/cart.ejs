@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Cart</title>
+</head>
+<body>
+    <header>
+        <h1>Mobile Phone Store</h1>
+        <nav>
+            <a href="/" class="btn">Home</a>
+            <a href="/cart" class="btn">Cart</a>
+        </nav>
+    </header>
+    <div class="cart">
+        <h1>Your Cart</h1>
+        <% if (cart.length > 0) { %>
+            <% cart.slice(0, 2).forEach(product => { %> <!-- Only display the first 2 products in the cart -->
+                <div class="cart-item">
+                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>">
+                    <h2><%= product.name %></h2>
+                    <p>NGN<%= product.price %></p>
+                    <form action="/remove-from-cart" method="POST">
+                        <input type="hidden" name="productId" value="<%= product.id %>">
+                        <button type="submit" class="btn">Remove</button>
+                    </form>
+                </div>
+            <% }); %>
+            <h2>Total: NGN<%= cart.slice(0, 2).reduce((total, product) => total + product.price, 0) %></h2> <!-- Update the total to reflect only the first 2 products -->
+            <a href="/checkout" class="btn">Proceed to Checkout</a>
+        <% } else { %>
+            <p>Your cart is empty</p>
+        <% } %>
+    </div>
+    
+    <div class="products">
+        <% products.forEach(product => { %>
+            <div class="product">
+                <img src="<%= product.imageUrl %>" alt="<%= product.name %>">
+                <h2><%= product.name %></h2>
+                <p><%= product.description %></p>
+                <p>NGN<%= product.price %></p>
+                <form action="/add-to-cart" method="POST">
+                    <input type="hidden" name="productId" value="<%= product.id %>">
+                    <button type="submit" class="btn">Add to Cart</button>
+                </form>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>
